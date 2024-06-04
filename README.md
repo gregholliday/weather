@@ -1,4 +1,4 @@
-# weather
+# Weather Data - Easley/Greenville SC
 Historical daily weather data for Easley and Greenville, SC.
 
 Includes: 
