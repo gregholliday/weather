@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<WorkflowProcess Version="12.2.0.0.1" DBVersion="19.0.0.0.0" Schema="" xmlns="http://xmlns.oracle.com/odmr11">
+    <Nodes>
+        <DataSource Id="10021" Name="WEATHER_DATA" Status="Complete">
+            <Icon XCOORD="95" YCOORD="119"></Icon>
+            <Messages/>
+            <Parallelism Enable="false">
+                <SystemDetermined/>
+            </Parallelism>
+            <CacheSettings UseFullData="false" GenerateCache="false">
+                <NumberOfRows>2000</NumberOfRows>
+                <Method>
+                    <TopN/>
+                </Method>
+            </CacheSettings>
+            <SQLExpression>"N$10021" as (select "WEATHER_DATA"."WINDSPEED", 
+"WEATHER_DATA"."FEELSLIKEMAX", 
+"WEATHER_DATA"."WINDSPEEDMAX", 
+"WEATHER_DATA"."SEALEVELPRESSURE", 
+"WEATHER_DATA"."DESCRIPTION", 
+"WEATHER_DATA"."CONDITIONS", 
+"WEATHER_DATA"."SEVERERISK", 
+"WEATHER_DATA"."SUNRISE", 
+"WEATHER_DATA"."SOLARRADIATION", 
+"WEATHER_DATA"."ICON", 
+"WEATHER_DATA"."TEMPMAX", 
+"WEATHER_DATA"."WINDDIR", 
+"WEATHER_DATA"."FEELSLIKE", 
+"WEATHER_DATA"."SOLARENERGY", 
+"WEATHER_DATA"."PRECIP", 
+"WEATHER_DATA"."SUNSET", 
+"WEATHER_DATA"."HUMIDITY", 
+"WEATHER_DATA"."UVINDEX", 
+"WEATHER_DATA"."FEELSLIKEMIN", 
+"WEATHER_DATA"."PRECIPCOVER", 
+"WEATHER_DATA"."NAME", 
+"WEATHER_DATA"."WINDGUST", 
+"WEATHER_DATA"."WINDSPEEDMIN", 
+"WEATHER_DATA"."TEMPMIN", 
+"WEATHER_DATA"."VISIBILITY", 
+"WEATHER_DATA"."TEMP", 
+"WEATHER_DATA"."PRECIPTYPE", 
+"WEATHER_DATA"."DATETIME", 
+"WEATHER_DATA"."CLOUDCOVER", 
+"WEATHER_DATA"."DEW", 
+"WEATHER_DATA"."WINDSPEEDMEAN", 
+"WEATHER_DATA"."SOURCE", 
+"WEATHER_DATA"."MOONPHASE" 
+from "GHOLLIDAY"."WEATHER_DATA"  )</SQLExpression>
+            <Attributes>
+                <Attribute Name="WINDSPEED" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="FEELSLIKEMAX" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="WINDSPEEDMAX" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="SEALEVELPRESSURE" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="DESCRIPTION" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="CONDITIONS" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="SEVERERISK" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="SUNRISE" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="SOLARRADIATION" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="ICON" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="TEMPMAX" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="WINDDIR" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="FEELSLIKE" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="SOLARENERGY" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="PRECIP" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="SUNSET" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="HUMIDITY" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="UVINDEX" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="FEELSLIKEMIN" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="PRECIPCOVER" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="NAME" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="WINDGUST" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="WINDSPEEDMIN" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="TEMPMIN" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="VISIBILITY" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="TEMP" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="PRECIPTYPE" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="DATETIME" DataType="DATE" Status="Valid"/>
+                <Attribute Name="CLOUDCOVER" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="DEW" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="WINDSPEEDMEAN" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="SOURCE" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="MOONPHASE" DataType="NUMBER" Status="Valid"/>
+            </Attributes>
+            <SourceTable Schema="GHOLLIDAY" Name="WEATHER_DATA" Synonym="false"/>
+            <JSONColumns/>
+            <DataGuideSettings Generate="true" UseFullData="false" UseFullDoc="false">
+                <NumberOfRows>2000</NumberOfRows>
+                <NumberOfValues>10000</NumberOfValues>
+            </DataGuideSettings>
+        </DataSource>
+        <Aggregation Id="10026" Name="Greenville Rainfall" Status="Complete">
+            <Icon XCOORD="397" YCOORD="197"></Icon>
+            <Messages/>
+            <Parallelism Enable="false">
+                <SystemDetermined/>
+            </Parallelism>
+            <CacheSettings UseFullData="false" GenerateCache="false">
+                <NumberOfRows>2000</NumberOfRows>
+                <Method>
+                    <TopN/>
+                </Method>
+            </CacheSettings>
+            <SQLExpression>"N$10026" as (SELECT  t0."EXTRACT(YEAR FROM DATETIME", 
+ t0."PRECIP_SUM", 
+ t0."PRECIP_AVG"
+FROM
+  (SELECT  EXTRACT(YEAR FROM "DATETIME") "EXTRACT(YEAR FROM DATETIME", 
+    SUM("PRECIP") "PRECIP_SUM"
+    ,AVG("PRECIP") "PRECIP_AVG"
+  FROM {INPUT_SOURCE}
+   
+  GROUP BY EXTRACT(YEAR FROM "DATETIME")) t0
+ )</SQLExpression>
+            <AggregationElements>
+                <AggregationElement>
+                    <Source>
+                        <Attributes>
+                            <Attribute Name="PRECIP" DataType="NUMBER" Status="Valid"/>
+                        </Attributes>
+                    </Source>
+                    <Output Name="&quot;PRECIP_SUM&quot;" DataType="NUMBER" Status="Valid"/>
+                    <AggregationFunction>SUM()</AggregationFunction>
+                    <SubGroupBy>
+                        <Attributes/>
+                    </SubGroupBy>
+                </AggregationElement>
+                <AggregationElement>
+                    <Source>
+                        <Attributes>
+                            <Attribute Name="PRECIP" DataType="NUMBER" Status="Valid"/>
+                        </Attributes>
+                    </Source>
+                    <Output Name="&quot;PRECIP_AVG&quot;" DataType="NUMBER" Status="Valid"/>
+                    <AggregationFunction>AVG()</AggregationFunction>
+                    <SubGroupBy>
+                        <Attributes/>
+                    </SubGroupBy>
+                </AggregationElement>
+            </AggregationElements>
+            <GroupingElement>
+                <Expression>EXTRACT(YEAR FROM "DATETIME")</Expression>
+            </GroupingElement>
+            <AutoSpec>Yes</AutoSpec>
+        </Aggregation>
+        <Aggregation Id="10030" Name="Easley Rainfall" Status="Complete">
+            <Icon XCOORD="394" YCOORD="410"></Icon>
+            <Messages/>
+            <Parallelism Enable="false">
+                <SystemDetermined/>
+            </Parallelism>
+            <CacheSettings UseFullData="false" GenerateCache="false">
+                <NumberOfRows>2000</NumberOfRows>
+                <Method>
+                    <TopN/>
+                </Method>
+            </CacheSettings>
+            <SQLExpression>"N$10030" as (SELECT  t0."EXTRACT(YEAR FROM DATETIME", 
+ t0."PRECIP_SUM", 
+ t0."PRECIP_AVG"
+FROM
+  (SELECT  EXTRACT(YEAR FROM "DATETIME") "EXTRACT(YEAR FROM DATETIME", 
+    SUM("PRECIP") "PRECIP_SUM"
+    ,AVG("PRECIP") "PRECIP_AVG"
+  FROM {INPUT_SOURCE}
+   
+  GROUP BY EXTRACT(YEAR FROM "DATETIME")) t0
+ )</SQLExpression>
+            <AggregationElements>
+                <AggregationElement>
+                    <Source>
+                        <Attributes>
+                            <Attribute Name="PRECIP" DataType="NUMBER" Status="Valid"/>
+                        </Attributes>
+                    </Source>
+                    <Output Name="&quot;PRECIP_SUM&quot;" DataType="NUMBER" Status="Valid"/>
+                    <AggregationFunction>SUM()</AggregationFunction>
+                    <SubGroupBy>
+                        <Attributes/>
+                    </SubGroupBy>
+                </AggregationElement>
+                <AggregationElement>
+                    <Source>
+                        <Attributes>
+                            <Attribute Name="PRECIP" DataType="NUMBER" Status="Valid"/>
+                        </Attributes>
+                    </Source>
+                    <Output Name="&quot;PRECIP_AVG&quot;" DataType="NUMBER" Status="Valid"/>
+                    <AggregationFunction>AVG()</AggregationFunction>
+                    <SubGroupBy>
+                        <Attributes/>
+                    </SubGroupBy>
+                </AggregationElement>
+            </AggregationElements>
+            <GroupingElement>
+                <Expression>EXTRACT(YEAR FROM "DATETIME")</Expression>
+            </GroupingElement>
+            <AutoSpec>Yes</AutoSpec>
+        </Aggregation>
+        <RowFilter Id="10024" Name="Greenville" Status="Complete">
+            <Icon XCOORD="207" YCOORD="237"></Icon>
+            <Messages/>
+            <Parallelism Enable="false">
+                <SystemDetermined/>
+            </Parallelism>
+            <CacheSettings UseFullData="false" GenerateCache="false">
+                <NumberOfRows>2000</NumberOfRows>
+                <Method>
+                    <TopN/>
+                </Method>
+            </CacheSettings>
+            <SQLExpression>"N$10024" as (SELECT 
+"WINDSPEED"
+, "FEELSLIKEMAX"
+, "WINDSPEEDMAX"
+, "SEALEVELPRESSURE"
+, "DESCRIPTION"
+, "CONDITIONS"
+, "SEVERERISK"
+, "SUNRISE"
+, "SOLARRADIATION"
+, "ICON"
+, "TEMPMAX"
+, "WINDDIR"
+, "FEELSLIKE"
+, "SOLARENERGY"
+, "PRECIP"
+, "SUNSET"
+, "HUMIDITY"
+, "UVINDEX"
+, "FEELSLIKEMIN"
+, "PRECIPCOVER"
+, "NAME"
+, "WINDGUST"
+, "WINDSPEEDMIN"
+, "TEMPMIN"
+, "VISIBILITY"
+, "TEMP"
+, "PRECIPTYPE"
+, "DATETIME"
+, "CLOUDCOVER"
+, "DEW"
+, "WINDSPEEDMEAN"
+, "SOURCE"
+, "MOONPHASE"
+
+FROM
+{INPUT_SOURCE}
+WHERE
+"NAME" = 'Greenville, SC' )</SQLExpression>
+            <OutputColumns>
+                <Attribute Name="WINDSPEED" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="FEELSLIKEMAX" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="WINDSPEEDMAX" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="SEALEVELPRESSURE" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="DESCRIPTION" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="CONDITIONS" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="SEVERERISK" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="SUNRISE" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="SOLARRADIATION" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="ICON" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="TEMPMAX" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="WINDDIR" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="FEELSLIKE" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="SOLARENERGY" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="PRECIP" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="SUNSET" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="HUMIDITY" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="UVINDEX" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="FEELSLIKEMIN" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="PRECIPCOVER" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="NAME" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="WINDGUST" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="WINDSPEEDMIN" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="TEMPMIN" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="VISIBILITY" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="TEMP" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="PRECIPTYPE" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="DATETIME" DataType="DATE" Status="Valid"/>
+                <Attribute Name="CLOUDCOVER" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="DEW" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="WINDSPEEDMEAN" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="SOURCE" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="MOONPHASE" DataType="NUMBER" Status="Valid"/>
+            </OutputColumns>
+            <Filter>"NAME" = 'Greenville, SC'</Filter>
+        </RowFilter>
+        <RowFilter Id="10028" Name="Easley" Status="Complete">
+            <Icon XCOORD="206" YCOORD="346"></Icon>
+            <Messages/>
+            <Parallelism Enable="false">
+                <SystemDetermined/>
+            </Parallelism>
+            <CacheSettings UseFullData="false" GenerateCache="false">
+                <NumberOfRows>2000</NumberOfRows>
+                <Method>
+                    <TopN/>
+                </Method>
+            </CacheSettings>
+            <SQLExpression>"N$10028" as (SELECT 
+"WINDSPEED"
+, "FEELSLIKEMAX"
+, "WINDSPEEDMAX"
+, "SEALEVELPRESSURE"
+, "DESCRIPTION"
+, "CONDITIONS"
+, "SEVERERISK"
+, "SUNRISE"
+, "SOLARRADIATION"
+, "ICON"
+, "TEMPMAX"
+, "WINDDIR"
+, "FEELSLIKE"
+, "SOLARENERGY"
+, "PRECIP"
+, "SUNSET"
+, "HUMIDITY"
+, "UVINDEX"
+, "FEELSLIKEMIN"
+, "PRECIPCOVER"
+, "NAME"
+, "WINDGUST"
+, "WINDSPEEDMIN"
+, "TEMPMIN"
+, "VISIBILITY"
+, "TEMP"
+, "PRECIPTYPE"
+, "DATETIME"
+, "CLOUDCOVER"
+, "DEW"
+, "WINDSPEEDMEAN"
+, "SOURCE"
+, "MOONPHASE"
+
+FROM
+{INPUT_SOURCE}
+WHERE
+"NAME" = 'Easley, SC' )</SQLExpression>
+            <OutputColumns>
+                <Attribute Name="WINDSPEED" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="FEELSLIKEMAX" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="WINDSPEEDMAX" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="SEALEVELPRESSURE" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="DESCRIPTION" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="CONDITIONS" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="SEVERERISK" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="SUNRISE" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="SOLARRADIATION" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="ICON" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="TEMPMAX" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="WINDDIR" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="FEELSLIKE" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="SOLARENERGY" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="PRECIP" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="SUNSET" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="HUMIDITY" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="UVINDEX" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="FEELSLIKEMIN" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="PRECIPCOVER" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="NAME" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="WINDGUST" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="WINDSPEEDMIN" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="TEMPMIN" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="VISIBILITY" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="TEMP" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="PRECIPTYPE" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="DATETIME" DataType="DATE" Status="Valid"/>
+                <Attribute Name="CLOUDCOVER" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="DEW" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="WINDSPEEDMEAN" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="SOURCE" DataType="VARCHAR2" Status="Valid"/>
+                <Attribute Name="MOONPHASE" DataType="NUMBER" Status="Valid"/>
+            </OutputColumns>
+            <Filter>"NAME" = 'Easley, SC'</Filter>
+        </RowFilter>
+        <Graph ViewName="OUTPUT_1_9" ViewDirty="true" SampleDirty="true" Id="10034" Name="Easley Rainfall Graph" Status="Ready">
+            <Icon XCOORD="534" YCOORD="411"></Icon>
+            <Messages/>
+            <Parallelism Enable="false">
+                <SystemDetermined/>
+            </Parallelism>
+            <CacheSettings UseFullData="false" GenerateCache="true">
+                <NumberOfRows>2000</NumberOfRows>
+                <Method>
+                    <TopN/>
+                </Method>
+            </CacheSettings>
+            <SQLExpression>"N$10034" as (SELECT 
+"EXTRACT(YEAR FROM DATETIME"
+, "PRECIP_SUM"
+, "PRECIP_AVG"
+
+FROM
+{INPUT_SOURCE}
+ )</SQLExpression>
+            <GraphSettings>
+                <GraphSetting Name="Easley Rainfall" Type="Line" Id="b04df764-a148-4c21-aae4-a1074cef2e7a">
+                    <Comment></Comment>
+                    <XAttribute Name="EXTRACT(YEAR FROM DATETIME" DataType="NUMBER" Status="Valid"/>
+                    <XBinningSettings BinningEnabled="false" BinningKind="EqualWidth">
+                        <NumericBinCount>10</NumericBinCount>
+                    </XBinningSettings>
+                    <YAttributes>
+                        <YAttribute Name="PRECIP_AVG" DataType="NUMBER" Status="Valid"/>
+                        <YAttribute Name="PRECIP_SUM" DataType="NUMBER" Status="Valid"/>
+                    </YAttributes>
+                    <GroupByOption GroupByEnabled="false">
+                        <GroupByAttribute Name="&lt;dummy&gt;" DataType="&lt;dummy&gt;" Status="Missing" Alias="&lt;dummy&gt;"/>
+                        <BinningSettings BinningEnabled="false" BinningKind="EqualWidth">
+                            <NumericBinCount>10</NumericBinCount>
+                        </BinningSettings>
+                    </GroupByOption>
+                </GraphSetting>
+            </GraphSettings>
+            <GraphSourceAttributes>
+                <Attribute Name="EXTRACT(YEAR FROM DATETIME" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="PRECIP_SUM" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="PRECIP_AVG" DataType="NUMBER" Status="Valid"/>
+            </GraphSourceAttributes>
+            <SampleSettings UseFullData="false" GenerateCache="true">
+                <NumberOfRows>2000</NumberOfRows>
+                <Method>
+                    <Random Seed="12345"/>
+                </Method>
+            </SampleSettings>
+        </Graph>
+        <Graph ViewName="OUTPUT_2_9" ViewDirty="true" SampleDirty="true" Id="10036" Name="Greenville Rainfall Graph" Status="Ready">
+            <Icon XCOORD="553" YCOORD="198"></Icon>
+            <Messages/>
+            <Parallelism Enable="false">
+                <SystemDetermined/>
+            </Parallelism>
+            <CacheSettings UseFullData="false" GenerateCache="true">
+                <NumberOfRows>2000</NumberOfRows>
+                <Method>
+                    <TopN/>
+                </Method>
+            </CacheSettings>
+            <SQLExpression>"N$10036" as (SELECT 
+"EXTRACT(YEAR FROM DATETIME"
+, "PRECIP_SUM"
+, "PRECIP_AVG"
+
+FROM
+{INPUT_SOURCE}
+ )</SQLExpression>
+            <GraphSettings>
+                <GraphSetting Name="Graph2" Type="Line" Id="5baf0382-4f93-4902-9b44-2ae8733d69e4">
+                    <Comment></Comment>
+                    <XAttribute Name="EXTRACT(YEAR FROM DATETIME" DataType="NUMBER" Status="Valid"/>
+                    <XBinningSettings BinningEnabled="false" BinningKind="EqualWidth">
+                        <NumericBinCount>10</NumericBinCount>
+                    </XBinningSettings>
+                    <YAttributes>
+                        <YAttribute Name="PRECIP_AVG" DataType="NUMBER" Status="Valid"/>
+                        <YAttribute Name="PRECIP_SUM" DataType="NUMBER" Status="Valid"/>
+                    </YAttributes>
+                    <GroupByOption GroupByEnabled="false">
+                        <GroupByAttribute Name="&lt;dummy&gt;" DataType="&lt;dummy&gt;" Status="Missing" Alias="&lt;dummy&gt;"/>
+                        <BinningSettings BinningEnabled="false" BinningKind="EqualWidth">
+                            <NumericBinCount>10</NumericBinCount>
+                        </BinningSettings>
+                    </GroupByOption>
+                </GraphSetting>
+            </GraphSettings>
+            <GraphSourceAttributes>
+                <Attribute Name="EXTRACT(YEAR FROM DATETIME" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="PRECIP_SUM" DataType="NUMBER" Status="Valid"/>
+                <Attribute Name="PRECIP_AVG" DataType="NUMBER" Status="Valid"/>
+            </GraphSourceAttributes>
+            <SampleSettings UseFullData="false" GenerateCache="true">
+                <NumberOfRows>2000</NumberOfRows>
+                <Method>
+                    <Random Seed="12345"/>
+                </Method>
+            </SampleSettings>
+        </Graph>
+    </Nodes>
+    <Links>
+        <Link Id="10025" From="10021" To="10024" Name="Link" Label="From &quot;WEATHER_DATA&quot; to &quot;Greenville&quot;">
+            <ConnectorGraphicsInfo>
+                <Coordinates XCoordinate="0.0" YCoordinate="0.0"/>
+            </ConnectorGraphicsInfo>
+        </Link>
+        <Link Id="10027" From="10024" To="10026" Name="Link" Label="From &quot;Greenville&quot; to &quot;Greenville Rainfall&quot;">
+            <ConnectorGraphicsInfo>
+                <Coordinates XCoordinate="0.0" YCoordinate="0.0"/>
+            </ConnectorGraphicsInfo>
+        </Link>
+        <Link Id="10029" From="10021" To="10028" Name="Link" Label="From &quot;WEATHER_DATA&quot; to &quot;Easley&quot;">
+            <ConnectorGraphicsInfo>
+                <Coordinates XCoordinate="0.0" YCoordinate="0.0"/>
+            </ConnectorGraphicsInfo>
+        </Link>
+        <Link Id="10031" From="10028" To="10030" Name="Link" Label="From &quot;Easley&quot; to &quot;Easley Rainfall&quot;">
+            <ConnectorGraphicsInfo>
+                <Coordinates XCoordinate="0.0" YCoordinate="0.0"/>
+            </ConnectorGraphicsInfo>
+        </Link>
+        <Link Id="10035" From="10030" To="10034" Name="Link" Label="From &quot;Easley Rainfall&quot; to &quot;Easley Rainfall Graph&quot;">
+            <ConnectorGraphicsInfo>
+                <Coordinates XCoordinate="0.0" YCoordinate="0.0"/>
+            </ConnectorGraphicsInfo>
+        </Link>
+        <Link Id="10037" From="10026" To="10036" Name="Link" Label="From &quot;Greenville Rainfall&quot; to &quot;Greenville Rainfall Graph&quot;">
+            <ConnectorGraphicsInfo>
+                <Coordinates XCoordinate="0.0" YCoordinate="0.0"/>
+            </ConnectorGraphicsInfo>
+        </Link>
+    </Links>
+</WorkflowProcess>
